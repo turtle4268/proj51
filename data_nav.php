@@ -14,12 +14,21 @@
             </li>
         </ul>
         <ul class="navbar-nav nav-pills">
-            <li class="nav-item">
-                <a class="nav-link <?= $page_name=='data_singin' ? 'active' : '' ?>" href="data_singin.php">登入</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <?= $page_name=='data_register' ? 'active' : '' ?>" href="data_register.php">註冊</a>
-            </li>
+            <?php if(isset($_SESSION['user'])): ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= $page_name=='data_edit' ? 'active' : '' ?>" href="data_edit.php"><?= $_SESSION['user']['nickname'] ?></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= $page_name=='data_logout' ? 'active' : '' ?>" href="data_logout.php">登出</a>
+                </li>
+            <?php else: ?>
+                <li class="nav-item">
+                    <a class="nav-link <?= $page_name=='data_login' ? 'active' : '' ?>" href="data_login.php">登入</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= $page_name=='data_register' ? 'active' : '' ?>" href="data_register.php">註冊</a>
+                </li>
+            <?php endif;?>
         </ul>
     </div>
 </nav>
