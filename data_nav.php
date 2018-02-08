@@ -10,7 +10,7 @@
                 <a class="nav-link <?= $page_name=='data_list' ? 'active' : '' ?>" href="data_list.php">商品列表</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?= $page_name=='data_insert' ? 'active' : '' ?>" href="data_insert.php">購物車</a>
+                <a class="nav-link <?= $page_name=='data_cart' ? 'active' : '' ?>" href="data_cart.php">購物車</a>
             </li>
         </ul>
         <ul class="navbar-nav nav-pills">
