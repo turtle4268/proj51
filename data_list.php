@@ -5,17 +5,25 @@
 
     $per_page=4;
     $page=isset($_GET['page'])?intval($_GET['page']):1;
+    $cate=isset($_GET['cate'])?intval($_GET['cate']):0;     //分類
 
-    $t_sql = "SELECT COUNT(1) FROM `products`";
+    $where=" WHERE 1 ";     //分類內清單
+    if(!empty($cate)){
+        $where.="AND `category_sid`=$cate ";
+    }
+    $t_sql = "SELECT COUNT(1) FROM `products` $where";
+
     $t_result = $mysqli->query($t_sql);
     $t_rows = $t_result->fetch_row()[0];    //讀取筆數
 
     $t_pages = ceil($t_rows/$per_page); //總頁數
 
 
-    $c_sql = sprintf("SELECT * FROM `products` LIMIT %s, %s", ($page-1)*$per_page, $per_page);
+    $c_sql = sprintf("SELECT * FROM `products` $where LIMIT %s, %s", ($page-1)*$per_page, $per_page);
     $c_result = $mysqli->query($c_sql);
-     
+
+    $m_sql = "SELECT * FROM categories WHERE parent_sid=0 ORDER BY sid DESC";
+    $m_result = $mysqli->query($m_sql);     //分類清單
 ?>
 <?php include __DIR__.'/data_head.php' ?>
     <style>
@@ -30,11 +38,12 @@
         <?php include __DIR__.'/data_nav.php' ; ?>
         <div class="row">
             <div class="col-md-3">
-                <ul>
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                </ul>
+                <div class="btn-group-vertical btn-block">
+                <a class="btn btn-<?= $cate==0 ? '' : 'outline-' ?>primary" href="data_list.php">所有商品</a>
+                <?php while($row=$m_result->fetch_assoc()): ?>
+                    <a class="btn btn-<?= $cate==$row['sid'] ? '' : 'outline-' ?>primary" href="?cate=<?= $row['sid'] ?>"><?= $row['name'] ?></a>
+                <?php endwhile; ?>
+                </div>
             </div>
             <div class="col-md-9">
                 <div class="row">
