@@ -3,6 +3,7 @@
     include __DIR__.'/_db_connect.php';  
     $page_name='data_list';
 
+    $q_string=[];
     $per_page=4;
     $page=isset($_GET['page'])?intval($_GET['page']):1;
     $cate=isset($_GET['cate'])?intval($_GET['cate']):0;     //分類
@@ -10,6 +11,8 @@
     $where=" WHERE 1 ";     //分類內清單
     if(!empty($cate)){
         $where.="AND `category_sid`=$cate ";
+        $q_string['cate']=$cate ;   //丟分類項進去
+        //http_build_query($q_string)     產生cate=n&page=n的字串
     }
     $t_sql = "SELECT COUNT(1) FROM `products` $where";
 
@@ -50,16 +53,20 @@
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             <li class="page-item">
-                                <a class="page-link" href="?page=1" aria-label="Previous">
+                                <?php $q_string['page']=1; ?>
+                                <a class="page-link" href="?<?= http_build_query($q_string) ?>" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                     <span class="sr-only">&lt;&lt;</span>
                                 </a>
                             </li>
-                            <?php for($i=1; $i<=$t_pages; $i++): ?>
-                            <li class="page-item <?= $i==$page ? 'active' : '' ?>"><a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a></li>
+                            <?php for($i=1; $i<=$t_pages; $i++): 
+                                $q_string['page']=$i;    
+                            ?>
+                            <li class="page-item <?= $i==$page ? 'active' : '' ?>"><a class="page-link" href="?<?= http_build_query($q_string) ?>"><?= $i ?></a></li>
                             <?php endfor; ?>
                             <li class="page-item">
-                                <a class="page-link" href="?page=<?= $t_pages ?>" aria-label="Next">
+                                <?php $q_string['page']=$t_pages; ?>
+                                <a class="page-link" href="?<?= http_build_query($q_string) ?>" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                     <span class="sr-only">&gt;&gt;</span>
                                 </a>
@@ -75,7 +82,7 @@
                             <div class="card-body">
                                 <h5 class="card-title"><?= $row['bookname'] ?></h5>
                                 <p class="card-text"><i class="fas fa-male"></i> <?= $row['author'] ?><br>
-                                    <i class="far fa-money-bill-alt"></i> <?= $row['price'] ?></p>
+                                    <i class="fas fa-dollar-sign"></i> <?= $row['price'] ?></p>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <select name="" id="" class="form-control">
