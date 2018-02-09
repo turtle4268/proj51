@@ -77,7 +77,7 @@
                 <div class="row">
                     <?php while($row=$c_result->fetch_assoc()): ?>
                    <div class="col-md-3">
-                        <div class="card">
+                        <div class="card" data-sid="<?= $row['sid'] ?>">
                             <img class="product-img" src="imgs/small/<?= $row['book_id'] ?>.jpg" alt="Card image cap">
                             <div class="card-body">
                                 <h5 class="card-title"><?= $row['bookname'] ?></h5>
@@ -85,7 +85,7 @@
                                     <i class="fas fa-dollar-sign"></i> <?= $row['price'] ?></p>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <select name="" id="" class="form-control">
+                                        <select class="form-control qty">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
@@ -93,7 +93,7 @@
                                             <option value="5">5</option>
                                         </select>
                                     </div>
-                                    <a href="#" class="btn btn-primary"><i class="fas fa-shopping-cart"></i></a>
+                                    <button class="btn btn-primary add-cart"><i class="fas fa-shopping-cart"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -104,4 +104,19 @@
         </div>
 
     </div>
+    <script>
+        $("button.add-cart").click(function(){
+            var card=$(this).closest(".card");
+            var combo=card.find("select");
+            var sid=card.data('sid');
+            var qty=combo.val();
+
+            //alert(sid+" : "+qty);
+
+            $.get('add_to_cart.php',{sid:sid,qty:qty},function(data){
+                console.log(data);
+                alert("商品已加入購物車");
+            },"json");
+        });
+    </script>
 <?php include __DIR__.'/data_foot.php' ?>
