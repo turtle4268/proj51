@@ -4,7 +4,7 @@
     $page_name='data_list';
 
     $q_string=[];
-    $per_page=4;
+    $per_page=6;
     $page=isset($_GET['page'])?intval($_GET['page']):1;
     $cate=isset($_GET['cate'])?intval($_GET['cate']):0;     //分類
 
@@ -76,7 +76,14 @@
                 </div>
                 <div class="row">
                     <?php while($row=$c_result->fetch_assoc()): ?>
-                   <div class="col-md-3">
+                    <?php for($i=0;$i<12;$i++){     ////TEST
+                        if($i%2){
+
+                        }else{
+                            
+                        }
+                    } ?>
+                   <div class="col-md-4">
                         <div class="card" data-sid="<?= $row['sid'] ?>">
                             <img class="product-img" src="imgs/small/<?= $row['book_id'] ?>.jpg" alt="Card image cap">
                             <div class="card-body">
