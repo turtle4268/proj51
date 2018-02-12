@@ -10,7 +10,9 @@
                 <a class="nav-link <?= $page_name=='data_list' ? 'active' : '' ?>" href="data_list.php">商品列表</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?= $page_name=='data_cart' ? 'active' : '' ?>" href="data_cart.php">購物車</a>
+                <a class="nav-link <?= $page_name=='data_cart' ? 'active' : '' ?>" href="data_cart.php">購物車
+                    <span class="badge badge-pill badge-success item-count">0</span>
+                </a>
             </li>
         </ul>
         <ul class="navbar-nav nav-pills">
@@ -32,3 +34,21 @@
         </ul>
     </div>
 </nav>
+<script>
+    var itemCount=$(".item-count");
+    itemCount.hide();
+    var countItems=function(obj){
+        itemCount.hide();
+        var sum=0;
+
+        for(var s in obj){
+            sum+= obj[s];
+        }
+        itemCount.text(sum);
+        itemCount.fadeIn();
+    };
+
+    $.get('add_to_cart.php',function(data){
+        countItems(data);
+    },'json');
+</script>

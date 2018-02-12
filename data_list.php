@@ -122,7 +122,8 @@
 
             $.get('add_to_cart.php',{sid:sid,qty:qty},function(data){
                 console.log(data);
-                alert("商品已加入購物車");
+                //alert("商品已加入購物車");
+                countItems(data);
             },"json");
         });
     </script>
